@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Header from "../navigation/Header";
+import Sidebar from "../navigation/Sidebar";
 import { Link } from "react-router-dom";
 import Modal from "../../component/Modal";
 
@@ -7,7 +8,7 @@ class Y1BusinessTypes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      businesstypename: "",
+      businesstype_name: "",
       data: [],
       nameTotals: {},
       statusTotals: {},
@@ -23,7 +24,7 @@ class Y1BusinessTypes extends Component {
   fetchData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/mastersettings/businesstype"
+        "http://localhost:3000/mastersettings/businesstypes"
       );
       const result = await response.json();
       this.setState({ data: result });
@@ -52,14 +53,14 @@ class Y1BusinessTypes extends Component {
   handleAddBusinesstype = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/mastersettings/businesstype",
+        "http://localhost:3000/mastersettings/businesstypes",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            businesstypename: this.state.businesstypename,
+            businesstype_name: this.state.businesstype_name,
           }),
         }
       );
@@ -74,7 +75,7 @@ class Y1BusinessTypes extends Component {
   };
 
   inputHandle = (e) => {
-    this.setState({ businesstypename: e.target.value });
+    this.setState({ businesstype_name: e.target.value });
   };
 
   render() {
@@ -83,6 +84,7 @@ class Y1BusinessTypes extends Component {
     return (
       <>
         <Header />
+        <Sidebar />
         <div id="dashboard">
           <div className="dashboard">
             <h3>Bussiness Type</h3>
@@ -122,7 +124,7 @@ class Y1BusinessTypes extends Component {
                           <input
                             type="text"
                             onChange={this.inputHandle}
-                            value={this.state.businesstypename}
+                            value={this.state.businesstype_name}
                             name="Name"
                           />
                         </div>
@@ -150,7 +152,7 @@ class Y1BusinessTypes extends Component {
                         {data.map((item, index) => (
                           <tr>
                             <td>{index + 1}</td>
-                            <td>{item.businesstypename}</td>
+                            <td>{item.businesstype_name}</td>
                             <td
                               className={
                                 item.status === "Active" ? "active" : "deactive"

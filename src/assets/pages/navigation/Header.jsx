@@ -41,8 +41,6 @@ class Header extends Component {
     fetch("http://worldtimeapi.org/api/timezone")
       .then((response) => response.json())
       .then((data) => {
-        console.log("API response:", data); // Add this line for debugging
-
         if (Array.isArray(data)) {
           this.setState({ timeZones: data });
         } else {

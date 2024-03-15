@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Header from "../navigation/Header";
+import Sidebar from "../navigation/Sidebar";
 import { Link } from "react-router-dom";
 import Modal from "../../component/Modal";
 
@@ -10,38 +11,35 @@ class Y3BusinessSubcategories extends Component {
       data: [
         {
           name: "Sanu",
-          category:"true",
+          category: "true",
           status: "Active",
           option: "2",
         },
         {
-          
           name: "Merchant",
-          category:"true",
+          category: "true",
           status: "Deactive",
           option: "2",
         },
         {
-         
           name: "Merchant",
-          category:"true",
+          category: "true",
           status: "Deactive",
           option: "2",
         },
-       
+
         {
-          
-            name: "shivam",
-            category:"true",
-            status: "Active",
-            option: "2",
-          },
-          {     
-            name: "sh",
-            category:"true",
-            status: "Active",
-            option: "2",
-          },
+          name: "shivam",
+          category: "true",
+          status: "Active",
+          option: "2",
+        },
+        {
+          name: "sh",
+          category: "true",
+          status: "Active",
+          option: "2",
+        },
       ],
       statusTotals: {},
       isMenu: true,
@@ -58,11 +56,12 @@ class Y3BusinessSubcategories extends Component {
   };
 
   render() {
-    const { data} = this.state;
+    const { data } = this.state;
 
     return (
       <>
         <Header />
+        <Sidebar />
         <div id="dashboard">
           <div className="dashboard">
             <h3>Business Sub Categories</h3>
@@ -121,15 +120,13 @@ class Y3BusinessSubcategories extends Component {
                           <th>Name</th>
                           <th>Category</th>
                           <th>Status</th>
-                          <th>
-                            Option
-                          </th>
+                          <th>Option</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {data.map((item,index) => (
+                        {data.map((item, index) => (
                           <tr>
-                            <td>{index+1}</td>
+                            <td>{index + 1}</td>
                             <td>{item.name}</td>
                             <td>{item.category}</td>
                             <td
@@ -139,13 +136,15 @@ class Y3BusinessSubcategories extends Component {
                             >
                               {item.status}
                             </td>
-                            <td className="edit-delete-icon"><i className="fas fa-trash-alt"/><i className="fas fa-edit"/></td>
+                            <td className="edit-delete-icon">
+                              <i className="fas fa-trash-alt" />
+                              <i className="fas fa-edit" />
+                            </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
-
                 </div>
               </div>
             </div>

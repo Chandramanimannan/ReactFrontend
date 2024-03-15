@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Header from "../navigation/Header";
+import Sidebar from "../navigation/Sidebar";
 import Modal from "../../component/Modal";
 
 class Y2Categories extends Component {
@@ -9,36 +10,34 @@ class Y2Categories extends Component {
       data: [
         {
           name: "Sanu",
-          shortname:"s",
+          shortname: "s",
           status: "Active",
           option: "2",
         },
         {
-          
           name: "Merchant",
-          shortname:"s",
+          shortname: "s",
           status: "Deactive",
           option: "2",
         },
         {
-         
           name: "Merchant",
-          shortname:"s",
+          shortname: "s",
           status: "Deactive",
           option: "2",
         },
         {
-            name: "shivam",
-            shortname:"s",
-            status: "Active",
-            option: "2",
-          },
-          { 
-            name: "sh",
-            shortname:"s",
-            status: "Active",
-            option: "2",
-          },
+          name: "shivam",
+          shortname: "s",
+          status: "Active",
+          option: "2",
+        },
+        {
+          name: "sh",
+          shortname: "s",
+          status: "Active",
+          option: "2",
+        },
       ],
       statusTotals: {},
       isMenu: true,
@@ -55,11 +54,12 @@ class Y2Categories extends Component {
   };
 
   render() {
-    const { data} = this.state;
+    const { data } = this.state;
 
     return (
       <>
         <Header />
+        <Sidebar />
         <div id="dashboard">
           <div className="dashboard">
             <h3>Categories</h3>
@@ -114,15 +114,13 @@ class Y2Categories extends Component {
                           <th>Name</th>
                           <th>Short Name</th>
                           <th>Status</th>
-                          <th>
-                            Option
-                          </th>
+                          <th>Option</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {data.map((item,index) => (
+                        {data.map((item, index) => (
                           <tr>
-                            <td>{index+1}</td>
+                            <td>{index + 1}</td>
                             <td>{item.name}</td>
                             <td>{item.shortname}</td>
                             <td
@@ -132,13 +130,15 @@ class Y2Categories extends Component {
                             >
                               {item.status}
                             </td>
-                            <td className="edit-delete-icon"><i className="fas fa-trash-alt"/><i className="fas fa-edit"/></td>
+                            <td className="edit-delete-icon">
+                              <i className="fas fa-trash-alt" />
+                              <i className="fas fa-edit" />
+                            </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
-
                 </div>
               </div>
             </div>

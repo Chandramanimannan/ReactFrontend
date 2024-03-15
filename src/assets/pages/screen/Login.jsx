@@ -12,19 +12,16 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(
-        "http://Centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: username,
-            password: password,
-          }),
-        }
-      );
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: username,
+          password: password,
+        }),
+      });
 
       if (response.ok) {
         const data = await response.json();

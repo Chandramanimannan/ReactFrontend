@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Header from "../navigation/Header";
+import Sidebar from "../navigation/Sidebar";
 import { Link } from "react-router-dom";
 import Modal from "../../component/Modal";
 
@@ -9,41 +10,36 @@ class Y4ManageCurrencies extends Component {
     this.state = {
       data: [
         {
-         
           currencyname: "Sanu",
           currencycode: "xy",
           status: "Active",
           option: "2",
         },
         {
-          
           currencyname: "Merchant",
           currencycode: "xy",
           status: "Deactive",
           option: "2",
         },
         {
-         
           currencyname: "Merchant",
           currencycode: "xy",
           status: "Deactive",
           option: "2",
         },
-       
+
         {
-          
           currencyname: "shivam",
           currencycode: "xy",
-            status: "Active",
-            option: "2",
-          },
-          {
-            
-            currencyname: "sh",
-            currencycode: "xy",
-            status: "Active",
-            option: "2",
-          },
+          status: "Active",
+          option: "2",
+        },
+        {
+          currencyname: "sh",
+          currencycode: "xy",
+          status: "Active",
+          option: "2",
+        },
       ],
       statusTotals: {},
       isMenu: true,
@@ -60,11 +56,12 @@ class Y4ManageCurrencies extends Component {
   };
 
   render() {
-    const { data} = this.state;
+    const { data } = this.state;
 
     return (
       <>
         <Header />
+        <Sidebar />
         <div id="dashboard">
           <div className="dashboard">
             <h3>Manage Currencies</h3>
@@ -119,15 +116,13 @@ class Y4ManageCurrencies extends Component {
                           <th>Currency Name</th>
                           <th>Currency Code</th>
                           <th>Status</th>
-                          <th>
-                            Option
-                          </th>
+                          <th>Option</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {data.map((item,index) => (
+                        {data.map((item, index) => (
                           <tr>
-                            <td>{index+1}</td>
+                            <td>{index + 1}</td>
                             <td>{item.currencyname}</td>
                             <td>{item.currencycode}</td>
                             <td
@@ -137,13 +132,15 @@ class Y4ManageCurrencies extends Component {
                             >
                               {item.status}
                             </td>
-                            <td className="edit-delete-icon"><i className="fas fa-trash-alt"/><i className="fas fa-edit"/></td>
+                            <td className="edit-delete-icon">
+                              <i className="fas fa-trash-alt" />
+                              <i className="fas fa-edit" />
+                            </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
-
                 </div>
               </div>
             </div>

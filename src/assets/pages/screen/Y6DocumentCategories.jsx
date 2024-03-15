@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Header from "../navigation/Header";
+import Sidebar from "../navigation/Sidebar";
 import { Link } from "react-router-dom";
 import Modal from "../../component/Modal";
 
@@ -9,51 +10,46 @@ class Y6DocumentCategories extends Component {
     this.state = {
       data: [
         {
-         
           name: "Sanu",
           type: "A",
           side: "Left",
-          length:"20m",
+          length: "20m",
           status: "Active",
           option: "2",
         },
         {
-          
           name: "Merchant",
           type: "A",
           side: "Left",
-          length:"20m",
+          length: "20m",
           status: "Deactive",
           option: "2",
         },
         {
-         
           name: "Merchant",
           type: "A",
           side: "Left",
-          length:"20m",
+          length: "20m",
           status: "Deactive",
           option: "2",
         },
-       
+
         {
-          
-            name: "shivam",
-            type: "A",
-            side: "Left",
-            length:"20m",
-            status: "Active",
-            option: "2",
-          },
-          {
-            
-            name: "sh",
-            type: "A",
-            side: "Left",
-            length:"20m",
-            status: "Active",
-            option: "2",
-          },
+          name: "shivam",
+          type: "A",
+          side: "Left",
+          length: "20m",
+          status: "Active",
+          option: "2",
+        },
+        {
+          name: "sh",
+          type: "A",
+          side: "Left",
+          length: "20m",
+          status: "Active",
+          option: "2",
+        },
       ],
       statusTotals: {},
       isMenu: true,
@@ -70,11 +66,12 @@ class Y6DocumentCategories extends Component {
   };
 
   render() {
-    const { data} = this.state;
+    const { data } = this.state;
 
     return (
       <>
         <Header />
+        <Sidebar />
         <div id="dashboard">
           <div className="dashboard">
             <h3>Document Categories</h3>
@@ -131,15 +128,13 @@ class Y6DocumentCategories extends Component {
                           <th>Side</th>
                           <th>Document Number Length</th>
                           <th>Status</th>
-                          <th>
-                            Option
-                          </th>
+                          <th>Option</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {data.map((item,index) => (
+                        {data.map((item, index) => (
                           <tr>
-                            <td>{index+1}</td>
+                            <td>{index + 1}</td>
                             <td>{item.name}</td>
                             <td>{item.type}</td>
                             <td>{item.side}</td>
@@ -151,13 +146,15 @@ class Y6DocumentCategories extends Component {
                             >
                               {item.status}
                             </td>
-                            <td className="edit-delete-icon"><i className="fas fa-trash-alt"/><i className="fas fa-edit"/></td>
+                            <td className="edit-delete-icon">
+                              <i className="fas fa-trash-alt" />
+                              <i className="fas fa-edit" />
+                            </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
-
                 </div>
               </div>
             </div>

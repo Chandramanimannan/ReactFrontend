@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Header from "../navigation/Header";
+import Sidebar from "../navigation/Sidebar";
 import { Link } from "react-router-dom";
 import Modal from "../../component/Modal";
 
@@ -9,36 +10,31 @@ class Y7Banks extends Component {
     this.state = {
       data: [
         {
-         
           name: "Sanu",
           status: "Active",
           option: "2",
         },
         {
-          
           name: "Merchant",
           status: "Deactive",
           option: "2",
         },
         {
-         
           name: "Merchant",
           status: "Deactive",
           option: "2",
         },
-       
+
         {
-          
-            name: "shivam",
-            status: "Active",
-            option: "2",
-          },
-          {
-            
-            name: "sh",
-            status: "Active",
-            option: "2",
-          },
+          name: "shivam",
+          status: "Active",
+          option: "2",
+        },
+        {
+          name: "sh",
+          status: "Active",
+          option: "2",
+        },
       ],
       statusTotals: {},
       isMenu: true,
@@ -55,11 +51,12 @@ class Y7Banks extends Component {
   };
 
   render() {
-    const { data} = this.state;
+    const { data } = this.state;
 
     return (
       <>
         <Header />
+        <Sidebar />
         <div id="dashboard">
           <div className="dashboard">
             <h3>Banks</h3>
@@ -116,15 +113,13 @@ class Y7Banks extends Component {
                           <th>Bank Url</th>
                           <th>Image</th>
                           <th>Status</th>
-                          <th>
-                            Option
-                          </th>
+                          <th>Option</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {data.map((item,index) => (
+                        {data.map((item, index) => (
                           <tr>
-                            <td>{index+1}</td>
+                            <td>{index + 1}</td>
                             <td>{item.name}</td>
                             <td
                               className={
@@ -133,13 +128,15 @@ class Y7Banks extends Component {
                             >
                               {item.status}
                             </td>
-                            <td className="edit-delete-icon"><i className="fas fa-trash-alt"/><i className="fas fa-edit"/></td>
+                            <td className="edit-delete-icon">
+                              <i className="fas fa-trash-alt" />
+                              <i className="fas fa-edit" />
+                            </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
-
                 </div>
               </div>
             </div>

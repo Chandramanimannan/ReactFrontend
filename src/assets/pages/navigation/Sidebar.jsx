@@ -59,9 +59,9 @@ class Sidebar extends Component {
         label: "Master Setting",
         image: settings,
         subOptions: [
-          { label: "Business Type", link: "/businesstype", icon: "industry" },
+          { label: "Business Type", link: "/businesstypes", icon: "industry" },
           { label: "Categories", link: "/categories" },
-          { label: "Business Subcategories", link: "/businessSubcategories" },
+          { label: "Business Subcategories", link: "/businesssubcategories" },
           { label: "Manage Currencies", link: "/managecurrencies" },
           { label: "Document Type", link: "/documenttypes" },
           { label: "Document Categories", link: "/documentcategories" },
@@ -73,11 +73,11 @@ class Sidebar extends Component {
         image: report,
         subOptions: [
           { label: "Transaction Report", link: "/transactionreport" },
-          { label: "Temp Report", link: "/" },
-          { label: "Temp Unique Order Report", link: "/" },
-          { label: "Temp Common Order Report", link: "/" },
-          { label: "Payout Report", link: "/" },
-          { label: "Compare", link: "/" },
+          { label: "Temp Report", link: "/tempreport" },
+          { label: "Temp Unique Order Report", link: "/tempuniqueorderreport" },
+          { label: "Temp Common Order Report", link: "/tempcommonorderreport" },
+          { label: "Payout Report", link: "/payoutreport" },
+          { label: "Compare", link: "/compare" },
         ],
       },
       {
@@ -90,7 +90,7 @@ class Sidebar extends Component {
       },
       {
         label: "Settelments",
-        link: "/",
+        link: "/checksettlement",
         image: settelment,
       },
       {

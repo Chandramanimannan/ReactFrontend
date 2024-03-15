@@ -14,7 +14,7 @@ class Dashboard extends Component {
       userRole: "admin",
       showNoti: false,
       searchid: "",
-      searchresult: [],
+      searchresult: "",
       currentPage: 1,
       perPage: 50,
       DashboardTabledata: [],
@@ -31,9 +31,7 @@ class Dashboard extends Component {
     // const { currentPage, perPage } = this.state;
 
     try {
-      const response = await fetch(
-        `http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/transactiontables`
-      );
+      const response = await fetch(`http://127.0.0.1:3000/transactiontables`);
       const result = await response.json();
       this.setState({ DashboardTabledata: result });
     } catch (error) {
@@ -55,11 +53,13 @@ class Dashboard extends Component {
     const { searchid } = this.state;
     try {
       const response = await fetch(
-        `http://127.0.0.1:3000/tables/search?id=${searchid}`
+        `http://127.0.0.1:3000/transactiontables/quicksearch?id=${searchid}`
       );
 
       const result = await response.json();
-      this.setState({ searchresult: result });
+
+      this.setState({ searchresult: result[0] });
+      console.log("API ", this.state.searchresult);
     } catch (error) {
       console.error("An error occurred during searching:", error);
     }
@@ -125,7 +125,7 @@ class Dashboard extends Component {
                       Search
                     </button>
                   </div>
-
+                  {console.log("API ", this.state.searchresult)}
                   <div className="quickresponse">
                     <div className="status">
                       <h4>Status: </h4>

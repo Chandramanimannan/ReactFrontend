@@ -23,9 +23,7 @@ class TransactionReport extends Component {
         { label: "MID", name: "MID", id: 2 },
         { label: "Payment Gateway", name: "paymentgateway", id: 3 },
         { label: "Currency", name: "currency", id: 4, isDropdown: true },
-        { label: "Country", name: "country", id: 5, isDropdown: true },
         { label: "Card Type", name: "cardtype", id: 6, isDropdown: true },
-        { label: "Card Number", name: "cardnumber", id: 7, isText: true },
       ],
 
       displayOrder: [
@@ -33,9 +31,7 @@ class TransactionReport extends Component {
         "MID",
         "paymentgateway",
         "currency",
-        "country",
         "cardyype",
-        "cardnumber",
       ],
       formData: {},
       searcheddata: [],
