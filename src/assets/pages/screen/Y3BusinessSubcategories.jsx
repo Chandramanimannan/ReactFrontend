@@ -8,44 +8,33 @@ class Y3BusinessSubcategories extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [
-        {
-          name: "Sanu",
-          category: "true",
-          status: "Active",
-          option: "2",
-        },
-        {
-          name: "Merchant",
-          category: "true",
-          status: "Deactive",
-          option: "2",
-        },
-        {
-          name: "Merchant",
-          category: "true",
-          status: "Deactive",
-          option: "2",
-        },
-
-        {
-          name: "shivam",
-          category: "true",
-          status: "Active",
-          option: "2",
-        },
-        {
-          name: "sh",
-          category: "true",
-          status: "Active",
-          option: "2",
-        },
-      ],
+      subcategory_name:"",
+      category_name:"",
+      data: [],
+      nameTotals: {},
       statusTotals: {},
       isMenu: true,
       modalOpen: false,
+      Status: "",
+      isEditSubModalOpen: false,
+      editItemId: null,
     };
   }
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData = async () => {
+    try {
+      const response = await fetch(
+        "http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/mastersettings/businesssubcategory"
+      );
+      const result = await response.json();
+      this.setState({ data: result });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   handleModalClose = () => {
     this.setState({ modalOpen: false });
@@ -53,6 +42,192 @@ class Y3BusinessSubcategories extends Component {
 
   handleButtonClick = () => {
     this.setState({ modalOpen: true });
+  };
+  handleDecline = () => {
+    this.setState({ modalOpen: false });
+  };
+
+  handleSubAccept = () => {
+    this.handleAddSubBusinesstype();
+    this.setState({ modalOpen: false });
+  };
+  // inputShortSubHandle = (e) => {
+  //   this.setState({ subcategory_name: e.target.value });
+  // };
+  // inputNameSubHandle = (e) => {
+  //   this.setState({category_name: e.target.value });
+  // };
+
+
+
+  handleAddSubBusinesstype = async () => {
+    try {
+      const response = await fetch(
+        "http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/mastersettings/businesssubcategory",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            subcategory_name: this.state.subcategory_name,
+            category_name: this.state.category_name,
+          }),
+        }
+      );
+      if (response.ok) {
+        this.fetchData();
+
+      } else {
+        console.log("Error occurred");
+      }
+    } catch (error) {
+      console.error("An error occurred ", error);
+    }
+  };
+  
+  handleSubDelete = async (id) => {
+    try {
+      const response = await fetch(
+        `http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/mastersettings/deletebusinesssubcategory`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            subcategory_name: id,
+          }),
+        }
+      );
+      if (response.ok) {
+        this.fetchData();
+      } else {
+        console.log("Error occurred");
+      }
+    } catch (error) {
+      console.error("An error occurred ", error);
+    }
+  };
+  ////////////add
+  inputSubNameSearchHandle = (e) => {
+    this.setState({ subcategory_name: e.target.value });
+  };
+  inputSubCateSearchHandle = (e) => {
+    this.setState({ category_name: e.target.value });
+  };
+  inputSubStatusSearchHandle = (e) => {
+    this.setState({ Status: e.target.value });
+  };
+////////
+  inputNamesubcatHandle = (e) => {
+    this.setState({ subcategory_name: e.target.value });
+  };
+    inputSubsubHandle = (e) => {
+    this.setState({ category_name: e.target.value });
+  };
+  inputsubStatusHandle = (e) => {
+    this.setState({ Status: e.target.value });
+  };
+  ////
+  inputNamesSubHandle =(e) => {
+    this.setState({ subcategory_name: e.target.value });
+  };
+  inputCateSubHandle = (e) => {
+    this.setState({ category_name: e.target.value });
+  };
+  handleSubSearch = async () => {
+    const { subcategory_name, category_name, Status } = this.state;
+  
+    try {
+      let searchCriteria = {};
+  
+      if (subcategory_name) {
+        searchCriteria.subcategory_name = subcategory_name;
+      }
+      if (category_name) {
+        searchCriteria.category_name = category_name;
+      }
+      if (Status) {
+        searchCriteria.Status = Status;
+      }
+  
+      if (!subcategory_name && !Status && !category_name) {
+        searchCriteria.subcategory_name = "";
+      }
+      console.log("Search Criteria:", searchCriteria);
+  
+      const response = await fetch(
+        `http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/mastersettings/searchbusinesssubcategory`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(searchCriteria),
+        }
+      );
+      if (response.ok) {
+        const result = await response.json();
+        console.log("API Response:", result);
+        this.setState({ data: result.businessubcategories });
+      } else {
+        console.log("Error occurred while searching business types");
+      }
+    } catch (error) {
+      console.error("An error occurred ", error);
+    }
+  };
+  /////////////update///////
+  handleEditSubModalOpen = (item) => {
+    const { _id,subcategory_name,
+      category_name,
+      Status} = item;
+    this.setState(
+      {
+        isEditSubModalOpen: true,
+        subcategory_name,
+        category_name,
+        Status,
+        id: _id,
+      },
+      () => {}
+    );
+  };
+  handleAcceptSubEdit = async () => {
+    try {
+      const { id, subcategory_name,
+        category_name,
+        Status } = this.state;
+
+      const response = await fetch(
+        ` http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/mastersettings/updatebusinesssubcategory`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id,
+            subcategory_name,
+            category_name,
+            Status,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        await this.fetchData();
+        this.setState({ isEditSubModalOpen: false });
+
+        // Close the edit modal
+        this.setState({ isEditModalOpen: false });
+      } else {
+        console.log("Error occurred while updating business type");
+      }
+    } catch (error) {
+      console.error("An error occurred ", error);
+    }
   };
 
   render() {
@@ -69,18 +244,31 @@ class Y3BusinessSubcategories extends Component {
               <div className="search-container">
                 <span>
                   <label for="">Name:</label>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    onChange={this.inputSubNameSearchHandle}
+                    value={this.state.subcategory_name}
+                  />
                 </span>
                 <span>
                   <label for="">Category Name:</label>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    onChange={this.inputSubCateSearchHandle}
+                    value={this.state.category_name}
+                  />
                 </span>
                 <span>
                   <label for="">Status:</label>
-                  <input type="text" />
+                  <input
+                    type="text"
+                    onChange={this.inputSubStatusSearchHandle}
+                    value={this.state.Status}
+                  />
                 </span>
-
-                <button className="btn">search</button>
+                <button className="btn" onClick={this.handleSubSearch}>
+                Search
+                </button>
               </div>
               <div className="Mastertable">
                 <div className="TableHeader-Option">
@@ -94,21 +282,30 @@ class Y3BusinessSubcategories extends Component {
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                   </div>
                   {this.state.modalOpen && (
-                    <Modal onClose={this.handleModalClose}>
-                      <span
-                        className="close-button"
-                        onClick={this.handleModalClose}
-                      >
-                        &times;
-                      </span>
-
-                      <div>
-                        <h3>Add Business SubCategories</h3>
-                        <input type="text" name="Name" />
-                        <button className="btn">Ok</button>
-                      </div>
-                      <div class="form__group field"></div>
-                    </Modal>
+                    <Modal
+                      heading={"Add SubBusiness Type"}
+                      onCloseModal={this.handleModalClose}
+                      onDecline={this.handleDecline}
+                      onAccept={this. handleSubAccept}
+                      children={
+                        <div>
+                          <label>Name</label>
+                          <input
+                            type="text"
+                            onChange={this.inputNamesSubHandle}
+                            value={this.state.subcategory_name}
+                            name="Name"
+                          />
+                            <label>Category</label>
+                          <input
+                            type="text"
+                            onChange={this.inputCateSubHandle}
+                            value={this.state.category_name}
+                            name="Category"
+                          />
+                        </div>
+                      }
+                    />
                   )}
                 </div>
                 <div id="CommonTable">
@@ -124,22 +321,64 @@ class Y3BusinessSubcategories extends Component {
                         </tr>
                       </thead>
                       <tbody>
-                        {data.map((item, index) => (
+                        {data && data.map((item, index) => (
                           <tr>
                             <td>{index + 1}</td>
-                            <td>{item.name}</td>
-                            <td>{item.category}</td>
+                            <td>{item.subcategory_name}</td>
+                            <td>{item.category_name}</td>
                             <td
                               className={
-                                item.status === "Active" ? "active" : "deactive"
+                                item.Status === "Active" ? "active" : "deactive"
                               }
                             >
-                              {item.status}
+                              {item.Status}
                             </td>
                             <td className="edit-delete-icon">
-                              <i className="fas fa-trash-alt" />
-                              <i className="fas fa-edit" />
-                            </td>
+                              <i className="fas fa-trash-alt"   onClick={() =>
+                                    this.handleSubDelete(item.subcategory_name)
+                                  } />
+                                <i
+                                  className="fas fa-edit"
+                                  onClick={() => this.handleEditSubModalOpen(item)}
+                                />
+                              </td>
+                              {this.state.isEditSubModalOpen && (
+                                <Modal
+                                  heading={"Edit SubBusiness Type"}
+                                  onCloseModal={() =>
+                                    this.setState({ isEditSubModalOpen: false })
+                                  }
+                                  onDecline={() =>
+                                    this.setState({ isEditSubModalOpen: false })
+                                  }
+                                  onAccept={this.handleAcceptSubEdit}
+                                  children={
+                                    <div>
+                                      <label>Name</label>
+                                      <input
+                                        type="text"
+                                        onChange={this.inputNamesubcatHandle}
+                                        value={this.state.subcategory_name}
+                                        name="Name"
+                                      />
+                                      <label>category</label>
+                                      <input
+                                        type="text"
+                                        onChange={this. inputSubsubHandle}
+                                        value={this.state.category_name}
+                                        name="category"
+                                      />
+                                        <label>Status</label>
+                                      <input
+                                        type="text"
+                                        onChange={this.inputsubStatusHandle}
+                                        value={this.state.Status}
+                                        name="Status"
+                                      />
+                                    </div>
+                                  }
+                                />
+                              )}
                           </tr>
                         ))}
                       </tbody>
