@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Header from "../navigation/Header";
 import Sidebar from "../navigation/Sidebar";
 import Table from "../../component/Table";
@@ -31,7 +32,9 @@ class Dashboard extends Component {
     // const { currentPage, perPage } = this.state;
 
     try {
-      const response = await fetch(`http://127.0.0.1:3000/transactiontables`);
+      const response = await fetch(
+        `http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/transactiontables`
+      );
       const result = await response.json();
       this.setState({ DashboardTabledata: result });
     } catch (error) {
@@ -53,13 +56,12 @@ class Dashboard extends Component {
     const { searchid } = this.state;
     try {
       const response = await fetch(
-        `http://127.0.0.1:3000/transactiontables/quicksearch?id=${searchid}`
+        `http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/transactiontables/quicksearch?id=${searchid}`
       );
 
       const result = await response.json();
 
-      this.setState({ searchresult: result[0] });
-      console.log("API ", this.state.searchresult);
+      this.setState({ searchresult: result });
     } catch (error) {
       console.error("An error occurred during searching:", error);
     }
@@ -125,7 +127,6 @@ class Dashboard extends Component {
                       Search
                     </button>
                   </div>
-                  {console.log("API ", this.state.searchresult)}
                   <div className="quickresponse">
                     <div className="status">
                       <h4>Status: </h4>
@@ -138,7 +139,15 @@ class Dashboard extends Component {
                       >
                         {this.state.searchresult.Status}
                       </p>
-                      <i class="fa-solid fa-ellipsis"></i>
+
+                      {
+                        <Link
+                          to={`/transactionreport/${this.state.searchresult._id}`}
+                        >
+                          {" "}
+                          <i class="fa-solid fa-ellipsis"></i>
+                        </Link>
+                      }
                     </div>
                     <div className="message">
                       <h4>Message: </h4>

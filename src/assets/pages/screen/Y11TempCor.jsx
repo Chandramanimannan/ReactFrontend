@@ -84,13 +84,16 @@ class TransactionReport extends Component {
   handleSearchClick = async () => {
     console.log(this.state.formData);
     try {
-      const response = await fetch("http://127.0.0.1:3000/transactionreport", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.state.formData),
-      });
+      const response = await fetch(
+        "http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/transactionreport",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(this.state.formData),
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();

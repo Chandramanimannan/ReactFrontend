@@ -26,21 +26,24 @@ function Signup() {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch("http://localhost:3000/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          mobile_no: mobile_no,
-          country: selectedCountry,
-          company_name: company_name,
-          password: password,
-          confirm_password: confirm_password,
-        }),
-      });
+      const response = await fetch(
+        "http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            mobile_no: mobile_no,
+            country: selectedCountry,
+            company_name: company_name,
+            password: password,
+            confirm_password: confirm_password,
+          }),
+        }
+      );
 
       setResult(await response.json());
 

@@ -39,8 +39,51 @@ class TransactionReport extends Component {
       ],
       formData: {},
       searcheddata: [],
+      quicksearchdata: [],
+      id: "",
     };
   }
+
+  componentDidMount() {
+    this.extractdataFromURL();
+  }
+
+  extractdataFromURL() {
+    const currentPath = window.location.pathname;
+    const afterCreatesettlement = currentPath.split("/transactionreport/")[1];
+    if (!afterCreatesettlement) {
+      return;
+    }
+    console.log("id", afterCreatesettlement);
+    this.handlequicksearchdata(afterCreatesettlement);
+  }
+
+  handlequicksearchdata = async (id) => {
+    try {
+      const response = await fetch(
+        `http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/transactionreport?id=${id}`
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        this.setState({ searcheddata: result }, () => {
+          console.log("search result", this.state.searcheddata);
+        });
+        <Table data={this.state.searcheddata} />;
+        console.log("result", result);
+      } else {
+        const errorData = await response.json();
+        this.setState({
+          error: errorData.error || "An error occurred.",
+        });
+      }
+    } catch (error) {
+      console.error("An error occurred ", error);
+      this.setState({
+        error: "An error occurred",
+      });
+    }
+  };
 
   handleButtonClick = () => {
     this.setState({ modalOpen: true });
@@ -86,24 +129,22 @@ class TransactionReport extends Component {
   };
 
   handleSearchClick = async () => {
-    console.log(this.state.formData);
     try {
-      const response = await fetch("http://127.0.0.1:3000/transactionreport", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.state.formData),
-      });
+      const response = await fetch(
+        "http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/transactionreport",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(this.state.formData),
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();
-        this.setState({ searcheddata: result }, () => {
-          console.log(this.state.searcheddata);
-        });
-
+        this.setState({ searcheddata: result.records });
         this.setState({ formData: {} });
-        console.log(this.state.formData);
       } else {
         const errorData = await response.json();
         this.setState({

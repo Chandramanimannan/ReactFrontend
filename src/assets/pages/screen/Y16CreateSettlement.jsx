@@ -3,25 +3,27 @@ import React, { Component, createRef } from "react";
 import Header from "../navigation/Header";
 import Modal from "../../component/Modal";
 import PDFGenerator from "../../component/PDFGenerator";
+import Sidebar from "../navigation/Sidebar";
 
 class CreateSettlement extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isMenu: true,
-      MDR: 8,
-      TxnApp: 0.5,
-      RR: 10,
-      SFee: 2,
-      TV: 1000,
-      TotalTxn: 10,
       data: [],
       Settlementdata: [],
       company_name: this.extractENameFromURL(),
       openPlusModal: false,
       openPDFModal: false,
+      openEditStatusModal: false,
       fromDate: "",
       toDate: "",
+      no_of_refund: 0,
+      no_of_chargeback: 0,
+      exchange_rate: 0,
+      idforPDF: "",
+      idforEdit: "",
+      statusforEdit: "",
     };
     this.toInputRef = createRef();
     this.fromInputRef = createRef();
@@ -57,8 +59,16 @@ class CreateSettlement extends Component {
   };
 
   handlePlusAccept = () => {
-    const { fromDate, toDate } = this.state;
-    this.handleCalculateButton(fromDate, toDate, this.state.company_name);
+    const { fromDate, toDate, no_of_refund, no_of_chargeback, exchange_rate } =
+      this.state;
+    this.handleCalculateButton(
+      fromDate,
+      toDate,
+      this.state.company_name,
+      no_of_refund,
+      no_of_chargeback,
+      exchange_rate
+    );
     this.setState({ openPlusModal: false });
   };
 
@@ -66,7 +76,14 @@ class CreateSettlement extends Component {
     this.setState({ openPlusModal: false });
   };
 
-  handleCalculateButton = async (fromDate, toDate, company_name) => {
+  handleCalculateButton = async (
+    fromDate,
+    toDate,
+    company_name,
+    no_of_refund,
+    no_of_chargeback,
+    exchange_rate
+  ) => {
     try {
       const response = await fetch(
         "http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/settlements",
@@ -79,6 +96,9 @@ class CreateSettlement extends Component {
             fromDate,
             toDate,
             company_name,
+            no_of_refund,
+            no_of_chargeback,
+            exchange_rate,
           }),
         }
       );
@@ -100,14 +120,14 @@ class CreateSettlement extends Component {
       );
       const result = await response.json();
       this.setState({ Settlementdata: result });
-      console.log(result);
     } catch (error) {
       console.error("Error fetching settlement details:", error);
     }
   };
 
-  handleViewMoreClick = () => {
+  handleViewMoreClick = (id) => {
     this.setState({ openPDFModal: true });
+    this.setState({ idforPDF: id });
   };
 
   handlePDFModalClose = () => {
@@ -122,10 +142,63 @@ class CreateSettlement extends Component {
     this.setState({ openPDFModal: false });
   };
 
+  handleEditStatus = (item) => {
+    this.setState({ openEditStatusModal: true });
+    this.setState({ idforEdit: item._id });
+    this.setState({ statusforEdit: item.status });
+  };
+
+  handleEditStatusModalClose = () => {
+    this.setState({ openEditStatusModal: false });
+  };
+
+  handleEditStatusAccept = () => {
+    this.setState({ openEditStatusModal: false });
+    this.editStatus();
+  };
+
+  handleEditStatusDecline = () => {
+    this.setState({ openEditStatusModal: false });
+  };
+
+  editStatus = async () => {
+    try {
+      const response = await fetch(
+        `http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/updatesettlements`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: this.state.idforEdit,
+            status: this.state.statusforEdit,
+          }),
+        }
+      );
+      const result = await response.json();
+    } catch (error) {
+      console.error("Error fetching rates data:", error);
+    }
+    this.showSettlementRecord(this.state.company_name);
+  };
+
+  getStatusColor(status) {
+    switch (status) {
+      case "Success":
+        return "#3CB371";
+      case "Pending":
+        return "#ffc125";
+      default:
+        return "#ffffff";
+    }
+  }
+
   render() {
     return (
       <>
         <Header />
+        <Sidebar />
         <div id="dashboard">
           {this.state.openPlusModal && (
             <Modal
@@ -135,44 +208,83 @@ class CreateSettlement extends Component {
               onAccept={this.handlePlusAccept}
               children={
                 <>
-                  <div class="form__group field">
+                  <div className="form-container">
+                    <label for="name" className="form-label">
+                      From
+                    </label>
                     <input
                       type="input"
-                      class="form__field transparent-input"
+                      className="form-input"
                       placeholder="From"
                       required=""
                       value={this.state.fromDate}
                       onChange={(e) =>
                         this.setState({ fromDate: e.target.value })
                       }
-                      onKeyDown={(e) => this.handleKeyDown(e, this.toInputRef)}
                     />
-                    <label for="name" class="form__label">
-                      From
-                    </label>
                   </div>
-                  <br />
-                  <br />
-
-                  <div class="form__group field">
+                  <div className="form-container">
+                    <label for="name" className="form-label">
+                      To
+                    </label>
                     <input
                       ref={this.toInputRef}
                       type="input"
-                      class="form__field transparent-input"
+                      className="form-input"
                       placeholder="To"
                       required=""
                       value={this.state.toDate}
                       onChange={(e) =>
                         this.setState({ toDate: e.target.value })
                       }
-                      onKeyDown={(e) => this.handleKeyDown(e, this.btnRef)}
                     />
-                    <label for="name" class="form__label">
-                      To
-                    </label>
                   </div>
-                  <br />
-                  <br />
+                  <div className="form-container">
+                    <label for="name" className="form-label">
+                      Number of Refunds
+                    </label>
+                    <input
+                      ref={this.toInputRef}
+                      type="input"
+                      className="form-input"
+                      placeholder=""
+                      value={this.state.no_of_refund}
+                      onChange={(e) =>
+                        this.setState({ no_of_refund: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="form-container">
+                    <label for="name" className="form-label">
+                      Number of Chargebacks
+                    </label>
+                    <input
+                      ref={this.toInputRef}
+                      type="input"
+                      className="form-input"
+                      placeholder=""
+                      value={this.state.no_of_chargeback}
+                      onChange={(e) =>
+                        this.setState({ no_of_chargeback: e.target.value })
+                      }
+                    />
+                  </div>
+                  <div className="form-container">
+                    <label for="name" className="form-label">
+                      EUR to USD Exc Rate
+                    </label>
+                    <input
+                      ref={this.toInputRef}
+                      type="input"
+                      className="form-input"
+                      placeholder=""
+                      required=""
+                      value={this.state.exchange_rate}
+                      onChange={(e) =>
+                        this.setState({ exchange_rate: e.target.value })
+                      }
+                    />
+                  </div>
                 </>
               }
             ></Modal>
@@ -186,8 +298,35 @@ class CreateSettlement extends Component {
               children={
                 <div>
                   <span>
-                    <PDFGenerator />
+                    <PDFGenerator id={this.state.idforPDF} />
                   </span>
+                </div>
+              }
+            />
+          )}
+
+          {this.state.openEditStatusModal && (
+            <Modal
+              heading={"Edit Status"}
+              onCloseModal={this.handleEditStatusModalClose}
+              onDecline={this.handleEditStatusDecline}
+              onAccept={this.handleEditStatusAccept}
+              children={
+                <div className="form-container">
+                  <label for="status" className="form-label">
+                    Status
+                  </label>
+                  <select
+                    ref={this.toInputRef}
+                    className="form-select"
+                    value={this.state.statusforEdit}
+                    onChange={(e) =>
+                      this.setState({ statusforEdit: e.target.value })
+                    }
+                  >
+                    <option value="Success">Success</option>
+                    <option value="Pending">Pending</option>
+                  </select>
                 </div>
               }
             />
@@ -217,6 +356,7 @@ class CreateSettlement extends Component {
                           <th>Settled Volume</th>
                           <th>Status</th>
                           <th>View</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -224,7 +364,11 @@ class CreateSettlement extends Component {
                           <tr key={index}>
                             <td>{index}</td>
                             <td>{item.date_settled}</td>
-                            <td>{item.total_volume}</td>
+                            <td>
+                              {"$ " +
+                                (item.total_sales_amount +
+                                  item.total_declines_amount)}
+                            </td>
                             <td
                               className={
                                 item.settlement_volume < 0
@@ -232,48 +376,37 @@ class CreateSettlement extends Component {
                                   : "active"
                               }
                             >
-                              {item.settlement_volume}
+                              {"$ " +
+                                (
+                                  item.settlement_volume -
+                                  item.refund_amount -
+                                  item.chargeback_amount
+                                ).toFixed(3)}
                             </td>
-                            <td>{item.status}</td>
+                            <td
+                              style={{
+                                color: this.getStatusColor(item.status),
+                                fontWeight: 700,
+                              }}
+                            >
+                              {item.status}
+                            </td>
                             <td className="dlkchgdkl">
-                              {/* {item.view} */}
                               <button
-                                onClick={this.handleViewMoreClick}
+                                onClick={() =>
+                                  this.handleViewMoreClick(item._id)
+                                }
                                 className="btn"
                               >
                                 View More
                               </button>
                             </td>
 
-                            {/* {this.state.modalOpen && (
-                            <Modal onClose={this.handleModalClose}>
-                              <span
-                                className="close-button"
-                                onClick={this.handleModalClose}
-                              >
-                                &times;
-                              </span>
-
-                              <div>
-                                <PDFGenerator></PDFGenerator>
-                              </div>
-
-                              <button
-                                ref={this.btnRef}
-                                class="Modelbtn"
-                                onClick={this.handleClickButton}
-                              >
-                                {" "}
-                                Ok
-                              </button>
-                              <br />
-                              <br />
-                            </Modal>
-                          )} */}
                             <td className="MSoption">
                               <i
                                 style={{ color: "#3e8cf3" }}
                                 className="fa-solid fa-pen-to-square"
+                                onClick={() => this.handleEditStatus(item)}
                               ></i>
                             </td>
                           </tr>

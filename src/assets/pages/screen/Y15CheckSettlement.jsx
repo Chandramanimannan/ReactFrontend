@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Header from "../navigation/Header";
 import { Link } from "react-router-dom";
 import Modal from "../../component/Modal";
+import Sidebar from "../navigation/Sidebar";
 
 class CheckSettlement extends Component {
   constructor(props) {
@@ -80,6 +81,7 @@ class CheckSettlement extends Component {
     return (
       <>
         <Header />
+        <Sidebar />
         <div id="dashboard">
           {this.state.openRatesModal && (
             <Modal
@@ -89,26 +91,7 @@ class CheckSettlement extends Component {
               onAccept={this.handleAccept}
               children={
                 <div>
-                  {ratesdata.settlement_scheme === "Total" ? (
-                    <ul>
-                      <li>
-                        <b>MDR: &nbsp;</b>
-                        {ratesdata.MDR}%
-                      </li>
-                      <li>
-                        <b>Total Txn Rate: &nbsp;</b>
-                        {ratesdata.txn_total}$
-                      </li>
-                      <li>
-                        <b>Rolling Reserve: &nbsp;</b>
-                        {ratesdata.RR}%
-                      </li>
-                      <li>
-                        <b>Settlement Fees: &nbsp;</b>
-                        {ratesdata.settlement_fee}$
-                      </li>
-                    </ul>
-                  ) : (
+                  {
                     <ul>
                       <li>
                         <b>MDR: &nbsp;</b>
@@ -127,11 +110,15 @@ class CheckSettlement extends Component {
                         {ratesdata.RR}%
                       </li>
                       <li>
-                        <b>Settlement Fees: &nbsp;</b>
-                        {ratesdata.settlement_fee}$
+                        <b>Refund Fees: &nbsp;</b>
+                        {ratesdata.refund_fee}$
+                      </li>
+                      <li>
+                        <b>Chargeback Fees: &nbsp;</b>
+                        {ratesdata.chargeback_fee}$
                       </li>
                     </ul>
-                  )}
+                  }
                 </div>
               }
             />

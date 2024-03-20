@@ -412,7 +412,7 @@ input[type="password"]:disabled {
 /* -------------------------------------------------------------------------- */
 
 .sidebar {
-  height: 100vh;
+  height: 92vh;
   width: 200px;
   position: fixed;
   z-index: 1;
@@ -420,6 +420,7 @@ input[type="password"]:disabled {
   transition: width 0.3s ease-in-out;
   border-right: 1px solid #ddd;
   background: #fff;
+  bottom: 0;
 }
 
 .dropdown {
@@ -924,11 +925,11 @@ input[type="password"]:disabled {
   text-align: center;
 }
 
-tr:nth-child(odd) {
+.Table-main tr:nth-child(odd) {
   background-color: #fbfbfe;
 }
 
-tr:nth-child(even) {
+.Table-main tr:nth-child(even) {
   background-color: #f4f3f8;
 }
 
@@ -1209,7 +1210,7 @@ tr:nth-child(even) {
 }
 
 .modal-container {
-  max-height: 50vh;
+  min-height: 50vh;
   min-width: 400px;
   margin-left: auto;
   margin-right: auto;
@@ -1640,9 +1641,6 @@ h2 {
   margin: 1rem;
 }
 
-/* .CommonTable {
-} */
-
 .CommonTable table {
   width: 100%;
   border-collapse: collapse;
@@ -1665,17 +1663,6 @@ h2 {
   text-align: center;
 }
 
-/* .settlementCountainers {
-  height: 100%;
-
-}
-
-.settlementCountainers > h1 {
-  padding-top: 1rem;
-  font-size: 1.2rem;
-  font-weight: 700;
-} */
-
 .checksettletable {
   /* background-color: #c850c0; */
 }
@@ -1697,6 +1684,20 @@ h2 {
   margin-left: 1.5rem;
 }
 
+.form-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0px;
+}
+
+.form-input {
+  padding: 2px;
+}
+
+.form-select {
+  width: 50%;
+}
 /* -------------------------------------------------------------------------- */
 /*                          Transaction Reports                               */
 /* -------------------------------------------------------------------------- */
@@ -1848,71 +1849,98 @@ h2 {
 
 /* .........................................................PDFGenerator.................................................  */
 
-.PDFGenerator {
+.pdf-container {
+  height: 60vh;
+  width: 50vw;
+  padding: 20px;
+  background-color: white;
+}
+
+.pdf-inner-container {
+  border: 2px solid black;
+  padding: 10px 0px;
+}
+
+.pdf-header {
+  margin: 0px auto;
+  align-self: center;
+  width: fit-content;
+}
+
+.pdf-firstsection {
+  margin: 10px;
+}
+.merchant-info {
+  display: grid;
+  grid-template-rows: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 10px;
+}
+
+.sheet-info {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+}
+
+.pdf-ruler {
+  height: 3px;
+  background-color: #000000;
+  margin: 10px 0px;
+}
+
+.pdf-secondsection {
+  margin: 10px 0px;
+  width: 100%;
+}
+
+.pdf-inner-container table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.pdf-inner-container thead {
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  font-weight: 700;
+  text-align: right;
+}
+
+.pdf-inner-container th {
+  padding: 10px;
+}
+
+.head {
+  text-align: left !important;
+}
+
+.pdf-inner-container tbody td {
+  padding: 5px 10px;
+  text-align: right;
+}
+
+.net-total-div {
+  margin: 15px 0px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px solid black;
+  padding: 5px 10px;
+  font-weight: 700;
+}
+
+.pdf-thirdsection {
+  margin: 10px 0px;
+}
+
+.pdf-lastsection {
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 70vh;
-}
-
-.receipt-box {
-  width: 100%;
-  margin: 20px 0;
-  padding: 15px;
-  border: 2px solid #333;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-}
-
-.actual-receipt {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
-}
-
-.receipt-organization-logo {
-  margin-bottom: 20px;
-}
-
-.receipt-organization-logo img {
-  max-width: 150px;
-  height: auto;
-  border-radius: 5px;
-}
-
-.actual-receipt table {
-  height: 80%;
-  width: 90%;
-  /* /border-collapse: collapse;
-  /margin-bottom: 20px; */
-}
-
-.actual-receipt td {
-  border: 1px solid #ccc;
-  padding: 2px;
-  text-align: left;
-  font-size: 14px;
-}
-
-.actual-receipt th {
-  background-color: #333;
-  color: #fff;
-  border: 1px solid #ccc;
-  padding: 2px;
-  text-align: left;
-  font-size: 14px;
-}
-
-.actions-right {
-  display: flex;
-  justify-content: flex-end;
   margin-top: 20px;
 }
 
-.receipt-modal-download-button {
+.pdf-button {
   padding: 12px 24px;
   background-color: #007bff;
   color: #fff;
@@ -1920,26 +1948,4 @@ h2 {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-.receipt-modal-download-button:hover {
-  background-color: #0056b3;
-}
-
-.sales-details {
-  margin-top: 20px;
-  width: 100%;
-}
-
-.sales-details th,
-.sales-details td {
-  border: 1px solid #ccc;
-  padding: 12px;
-  text-align: left;
-  font-size: 14px;
-}
-
-.sales-details th {
-  background-color: #333;
-  color: #fff;
 }

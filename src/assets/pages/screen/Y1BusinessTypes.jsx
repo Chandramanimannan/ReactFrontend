@@ -24,7 +24,7 @@ class Y1BusinessTypes extends Component {
   fetchData = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/mastersettings/businesstypes"
+        "http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/mastersettings/businesstypes"
       );
       const result = await response.json();
       this.setState({ data: result });
@@ -53,7 +53,7 @@ class Y1BusinessTypes extends Component {
   handleAddBusinesstype = async () => {
     try {
       const response = await fetch(
-        "http://localhost:3000/mastersettings/businesstypes",
+        "http://centpaysdb-env.eba-jwsrupux.ap-south-1.elasticbeanstalk.com/mastersettings/businesstypes",
         {
           method: "POST",
           headers: {
@@ -129,12 +129,7 @@ class Y1BusinessTypes extends Component {
                           />
                         </div>
                       }
-                    >
-                      {/* <div>
-                        <input type="text" name="Name" />
-                      </div>
-                      <div class="form__group field"></div> */}
-                    </Modal>
+                    ></Modal>
                   )}
                 </div>
                 <div id="CommonTable">

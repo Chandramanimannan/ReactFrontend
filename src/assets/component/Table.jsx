@@ -58,23 +58,7 @@ class Table extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   this.fetchData();
-  // }
-
-  // fetchData = async () => {
-  //   const { currentPage, perPage } = this.state;
-
-  //   try {
-  //     const response = await fetch(
-  //       `http://localhost:3000/transactiontables?page=${currentPage}&per_page=${perPage}`
-  //     );
-  //     const result = await response.json();
-  //     this.setState({ data: result });
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
+  componentDidMount() {}
 
   // Function to handle page change
   handlePageChange = (newPage) => {
@@ -132,6 +116,7 @@ class Table extends Component {
   render() {
     const { currentPage } = this.state;
     const { data } = this.props;
+    console.log("data", this.props.data);
     // const { columns, isfullScreen, isCustomizeColumn } = this.props;
     const columnStyles = {
       col2: { whiteSpace: "nowrap", textAlign: "left" },
@@ -196,6 +181,7 @@ class Table extends Component {
                     <th>Options</th>
                   </tr>
                 </thead>
+                {console.log(data)}
                 <tbody>
                   {data.map((row, index) => (
                     <tr key={index}>

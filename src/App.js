@@ -56,6 +56,10 @@ function App() {
             path="/createsettlement/:company_name"
             element={<CreateSettlement />}
           />
+          <Route
+            path="/transactionreport/:id"
+            element={<TransactionReport />}
+          />
         </Routes>
       </BrowserRouter>
     </>
